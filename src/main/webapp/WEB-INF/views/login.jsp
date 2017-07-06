@@ -10,7 +10,9 @@
 				</div>
 
 				<div class="panel-body">
-					
+					<c:if test="${error}">
+						<div class="alert alert-danger" role="alert">Invalid email or password</div>
+					</c:if>
 					<form action="login" method="post">
 						<div class="form-group">
 							<label>Name</label> <input type="text" class="form-control"

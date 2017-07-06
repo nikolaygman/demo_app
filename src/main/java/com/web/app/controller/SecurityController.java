@@ -23,11 +23,7 @@ public class SecurityController {
 	public ModelAndView login(@RequestParam(required = false, name = "error") String error,
 			@RequestParam(required = false, name = "logout") String logout, ModelAndView modelAndView) {
 		modelAndView.setViewName("login");
-		if (error != null) {
-			modelAndView.addObject("error", error != null);
-		} else {
-
-		}
+		modelAndView.addObject("error", error != null);
 		return modelAndView;
 	}
 
