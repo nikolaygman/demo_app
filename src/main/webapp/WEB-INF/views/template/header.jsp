@@ -54,11 +54,11 @@
 				<li><a href="/orders">Orders</a></li>
 				<c:choose>
 					<c:when test="${currentUser==null}">
-						<li><a href="<c:url value="/login" context="/${pageContext.request.serverName }" />">Login</a></li>
-						<li><a href="<c:url value="/register" context="/${pageContext.request.serverName }" />">Register</a></li>
+						<li><a href="/login">Login</a></li>
+						<li><a href="/register" >Register</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="<c:url value="/logout" context="/${pageContext.request.serverName }" />">Logout</a></li>
+						<li><a href="/logout">Logout</a></li>
 					</c:otherwise>
 				</c:choose>
 			</ul>
