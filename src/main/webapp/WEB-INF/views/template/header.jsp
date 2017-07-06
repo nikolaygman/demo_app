@@ -8,19 +8,19 @@
 					class="icon-bar"></span>
 			</button>
 
-			<a class="navbar-brand" href="${pageContext.request.contextPath}">Book
+			<a class="navbar-brand" href="">Book
 				store</a>
 
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li><a href="${pageContext.request.contextPath}">Home</a></li>
+				<li><a href="">Home</a></li>
 				<li><a href="#">Help</a></li>
 
 			</ul>
 
 			<form class="navbar-form navbar-left"
-				action="${pageContext.request.contextPath}" method="GET">
+				action="" method="GET">
 				<div class="input-group">
 					<input type="text" class="form-control" name="search" value="${searchQuery}">
 					<div class="input-group-btn">
@@ -51,14 +51,14 @@
 			</form>
 
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="${pageContext.request.contextPath}/orders">Orders</a></li>
+				<li><a href="/orders">Orders</a></li>
 				<c:choose>
 					<c:when test="${currentUser==null}">
-						<li><a href="${pageContext.request.contextPath}/login">Login</a></li>
-						<li><a href="${pageContext.request.contextPath}/register">Register</a></li>
+						<li><a href="/login">Login</a></li>
+						<li><a href="/register">Register</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+						<li><a href="/logout">Logout</a></li>
 					</c:otherwise>
 				</c:choose>
 			</ul>
