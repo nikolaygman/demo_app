@@ -8,19 +8,19 @@
 					class="icon-bar"></span>
 			</button>
 
-			<a class="navbar-brand" href="">Book
+			<a class="navbar-brand" href="/">Book
 				store</a>
 
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li><c:url value="" /></li>
+				<li><a href="/">Home</a></li>
 				<li><a href="#">Help</a></li>
 
 			</ul>
 
 			<form class="navbar-form navbar-left"
-				action="" method="GET">
+				action="/" method="GET">
 				<div class="input-group">
 					<input type="text" class="form-control" name="search" value="${searchQuery}">
 					<div class="input-group-btn">
