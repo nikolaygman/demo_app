@@ -9,27 +9,6 @@
 					<h3 class="panel-title">Login</h3>
 				</div>
 
-				<div class="panel-body">
-					<c:if test="${error}">
-						<div class="alert alert-danger" role="alert">Invalid email
-							or password</div>
-					</c:if>
-					<form action="login" method="post">
-						<div class="form-group">
-							<label>Name</label> <input type="text" class="form-control"
-								placeholder="Name" name="username" value="${userName }">
-						</div>
-						<div class="form-group">
-							<label>Password</label> <input type="password"
-								class="form-control" placeholder="Password" name="password">
-						</div>
-						<div class="checkbox">
-							<label> <input name="remember-me" type="checkbox">Remember me</label>
-						</div>
-						<input name="${_csrf.parameterName }" value="${_csrf.token }"
-							type="hidden">
-						<button type="submit" class="btn btn-default">Login</button>
-					</form>
 				</div>
 			</div>
 		</div>
