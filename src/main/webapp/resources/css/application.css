@@ -1,0 +1,64 @@
+@CHARSET "UTF-8";
+
+html, body {
+	height: 100%;
+	/* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto;
+	/* Negative indent footer by its height */
+	margin: 0 auto -60px;
+	/* Pad bottom by footer height */
+	padding: 0 0 60px;
+}
+
+#book-description {
+	margin-bottom: 15px
+}
+
+#book-authors {
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 10px
+}
+
+#book-order-btn {
+	margin-left: 12px
+}
+
+#footer {
+	height: 60px;
+	background-color: #F8F8F8;
+	border-top: 1px solid #E7E7E7;
+}
+
+#form-login, #form-register {
+	margin-top: 15%;
+}
+
+#content {
+	border-right: 1px solid #E7E7E7;
+	border-left: 1px solid #E7E7E7;
+}
+
+.navbar-static-top {
+	margin-bottom: 0px !important;
+}
+
+#order-info {
+	border-bottom: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+	border-left: 1px solid #DDDDDD;
+}
+
+#order-info {
+	margin-top: 20px;
+}
+
+.modal th,td {
+	border-top: none !important;
+	border-bottom: none !important;
+}

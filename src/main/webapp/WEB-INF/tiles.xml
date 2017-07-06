@@ -1,0 +1,40 @@
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="base_template" template="/WEB-INF/views/template/main.jsp">
+		<put-attribute name="title" value="Book store" />
+		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp" />
+		<put-attribute name="body" value=""/>
+		<put-list-attribute name="cssList">
+			<add-attribute value="/resources/css/application.css" />
+			<add-attribute value="/webjars/bootstrap/3.2.0/css/bootstrap.min.css" />
+		</put-list-attribute>
+	</definition>
+	<definition name="main" extends="base_template">
+		<put-attribute name="body"  >
+			<definition template="/WEB-INF/views/book_list.jsp">
+				<put-attribute name="order_form" value="/WEB-INF/views/order_form.jsp" />
+			</definition>
+		</put-attribute>
+	</definition>
+	<definition name="login" extends="base_template">
+		<put-attribute name="title" value="Login" />
+		<put-attribute name="body" value="/WEB-INF/views/login.jsp" />
+	</definition>
+	<definition name="orders" extends="base_template">
+		<put-attribute name="title" value="Orders" />
+		<put-attribute name="body" value="/WEB-INF/views/orders.jsp"></put-attribute>
+	</definition>
+	<definition name="register" extends="base_template">
+		<put-attribute name="title" value="Register" />
+		<put-attribute name="body" value="/WEB-INF/views/register.jsp"></put-attribute>
+	</definition>
+	<definition name="fail_search" extends="base_template">
+		<put-attribute name="body" value="/WEB-INF/views/fail_search.jsp" />	
+	</definition>
+	<definition name="empty_orders" extends="base_template">
+		<put-attribute name="body" value="/WEB-INF/views/empty_orders.jsp" />	
+	</definition>
+</tiles-definitions>

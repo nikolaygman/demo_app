@@ -1,0 +1,9 @@
+.env
+.idea/
+*.
+/.settings
+.classpath
+.project
+.springBeans
+target/*
+!/target/dependency/
