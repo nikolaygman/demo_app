@@ -53,6 +53,8 @@
                                     </div>
                                     <input name="${_csrf.parameterName }" value="${_csrf.token }"
                                            type="hidden">
+                                    <input id="#orderBookTitle" name="book_title" value=""
+                                           type="hidden">
                                 </form>
                             </td>
 
@@ -61,7 +63,7 @@
                                     <div class="form-group ">
                                         <label class="col-sm-4 control-label"> Book </label>
                                         <div class="col-sm-3">
-                                            <img id="orderBookImg" alt="${order.book.title }" src=""
+                                            <img id="orderBookImg" alt="" src=""
                                                  height="150px" width="100px">
                                         </div>
                                         <div id="orderBookTitle" class="col-sm-5"

@@ -43,7 +43,7 @@
                         <button type="button" class="btn btn-default" data-toggle="modal"
                                 data-target="#myModal" data-img_url="${book.img_url}"
                                 data-title="${book.title}" data-price="${book.price}"
-                                data-id="${book.id}" onclick="updateOrder(this)">Buy
+                                onclick="updateOrder(this)">Buy
                         </button>
 
                     </div>
@@ -57,11 +57,10 @@
     function updateOrder(buttonValue) {
         $('#order_success').hide();
         $('#modal').show();
-        $('#orderBookId').val(buttonValue.dataset.id);
         $('#orderBookImg').attr('src', buttonValue.dataset.img_url);
         $('#orderBookImg').attr('alt', buttonValue.dataset.title);
-        $('#orderBookTitle').html(buttonValue.dataset.title);
-        $('#orderBookPrice').html(buttonValue.dataset.price);
+        $('#orderBookTitle').val(buttonValue.dataset.title);
+        $('input[name="book_title"]').val(buttonValue.dataset.title);
         $('#orderTotal').html('Total : ' + buttonValue.dataset.price);
         $('#orderQuantity').val(1);
         $('#error_container').hide();

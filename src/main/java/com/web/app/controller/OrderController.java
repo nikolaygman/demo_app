@@ -1,6 +1,7 @@
 package com.web.app.controller;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 import javax.servlet.http.HttpSession;
@@ -35,15 +36,16 @@ public class OrderController {
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = "/make_order", method = RequestMethod.POST, produces = { "text/html" })
-	public @ResponseBody String make_order(RedirectView redirectView, ModelMap map, int book_id, @Valid Order order,
-			BindingResult bindingResult, HttpSession httpSession) {
+	@RequestMapping(value = "/make_order", method = RequestMethod.POST, produces = {"text/html"})
+	public @ResponseBody
+	String make_order(RedirectView redirectView, ModelMap map, String book_title , @Valid Order order,
+					  BindingResult bindingResult, HttpSession httpSession) {
 		if (bindingResult.hasErrors()) {
 			String errorList = bindingResult.getAllErrors().get(0).getDefaultMessage();
 			return errorList;
 		} else {
+			order.setBook(bookService.findByTitle(book_title));
 			order.setSessionId(httpSession.getId());
-			order.setBook(bookService.findById(book_id));
 			if (!userService.isAnonimous()) {
 				order.setUser(userService.currentUser());
 			}
@@ -54,13 +56,13 @@ public class OrderController {
 
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
 	public ModelAndView my_orders(ModelAndView modelAndView, HttpSession session) {
-		LinkedHashSet<Order> orders;
+		ArrayList<Order> orders;
 		if (userService.currentUser() == null) {
-			orders = (LinkedHashSet<Order>) orderService.getOrdersRelatedToSession(session.getId());
+			orders = (ArrayList<Order>) orderService.getOrdersRelatedToSession(session.getId());
 		} else {
-			orders = (LinkedHashSet<Order>) orderService.getOrdersRelatedToUser(userService.currentUser().getId());
+			orders = (ArrayList<Order>) orderService.getOrdersRelatedToUser(userService.currentUser().getId());
 		}
-		if(orders.isEmpty()) {
+		if (orders.isEmpty()) {
 			modelAndView.setViewName("empty_orders");
 		} else {
 			modelAndView.addObject("orders", orders);
@@ -69,8 +71,9 @@ public class OrderController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/updateTotal", method = RequestMethod.GET, produces = { "tex/html; UTF-8" })
-	public @ResponseBody String updateTotal(@RequestParam int quantity, String bookTitle) {
+	@RequestMapping(value = "/updateTotal", method = RequestMethod.GET, produces = {"tex/html; UTF-8"})
+	public @ResponseBody
+	String updateTotal(@RequestParam int quantity, String bookTitle) {
 		Book book = bookService.findByTitle(bookTitle);
 		return new DecimalFormat("#0.00").format(book.getPrice() * quantity);
 	}

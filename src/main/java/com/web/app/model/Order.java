@@ -115,21 +115,21 @@ public class Order {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL)
 	public Book getBook() {
 		return book;
 	}
 
 	public void setBook(Book book) {
 		this.book = book;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Column(name = "created_at")

@@ -1,5 +1,6 @@
 package com.web.app.service;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,12 +18,13 @@ public class OrderService {
 
 	SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-	public Set<Order> getOrdersRelatedToSession(String sessionId) {
+	public ArrayList<Order> getOrdersRelatedToSession(String sessionId) {
 		Session session = sessionFactory.openSession();
-		Set<Order> foundedOrders = null;
+		ArrayList<Order> foundedOrders = null;
 		try {
-			foundedOrders = new LinkedHashSet<Order>(
-					session.createQuery(String.format("from Order where sessionId = '%s' order by created_at desc", sessionId)).list());
+			Query query = session.createQuery("from Order where sessionId = :sessionId order by created_at desc");
+			query.setParameter("sessionId",sessionId);
+			foundedOrders = (ArrayList<Order>) query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -31,12 +33,13 @@ public class OrderService {
 		return foundedOrders;
 	}
 
-	public Set<Order> getOrdersRelatedToUser(int user_id) {
+	public ArrayList<Order> getOrdersRelatedToUser(int user_id) {
 		Session session = sessionFactory.openSession();
-		Set<Order> foundedOrders = null;
+		ArrayList<Order> foundedOrders = null;
 		try {
-			foundedOrders = new LinkedHashSet<Order>(
-					session.createQuery(String.format("from Order where user_id = '%s' order by created_at desc", user_id)).list());
+			Query query = session.createQuery("from Order where sessionId = :user_id order by created_at desc");
+			query.setParameter("user_id",user_id);
+			foundedOrders = (ArrayList<Order>) query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
