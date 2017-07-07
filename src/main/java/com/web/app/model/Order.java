@@ -24,11 +24,11 @@ import org.hibernate.annotations.CreationTimestamp;
 public class Order {
 
 	private Integer id;
-	@Size(min = 3,max=15, message = "First name must be 3-15 characters long" )
+	@Size(min = 3, max = 15, message = "First name must be 3-15 characters long")
 	private String firstName;
-	@Size(min = 3,max=15,  message = "Last name must be 3-15 characters long")
+	@Size(min = 3, max = 15, message = "Last name must be 3-15 characters long")
 	private String lastName;
-	@Size(min = 5,max=50,  message = "Address must be 5-50 characters long")
+	@Size(min = 5, max = 50, message = "Address must be 5-50 characters long")
 	private String address;
 	@Min(value = 1, message = "Quantity cant be negative or zero")
 	@Max(value = 99, message = "Quantity must be less than 99")
@@ -150,7 +150,7 @@ public class Order {
 
 	@Transient
 	public String getTotal() {
-		return  new DecimalFormat("#0.00").format(book.getPrice() * quantity);
+		return new DecimalFormat("#0.00").format(book.getPrice() * quantity);
 	}
 
 	@Override

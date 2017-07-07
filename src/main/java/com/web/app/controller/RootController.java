@@ -1,9 +1,21 @@
 package com.web.app.controller;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
+import com.web.app.model.Author;
+import com.web.app.model.Genre;
+import com.web.app.service.HibernateUtil;
+import org.hibernate.SessionFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,20 +28,21 @@ import com.web.app.model.Order;
 import com.web.app.service.BookService;
 import com.web.app.service.OrderService;
 import com.web.app.service.UserService;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class RootController {
 
 	@Autowired
-	BookService bookService;
+	private BookService bookService;
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	OrderService orderService;
+	private OrderService orderService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView main(@RequestParam(required = false, name = "search") String searchQuery,
-			@RequestParam(required = false, name = "selector") String selector, HttpSession httpSession) {
+							 @RequestParam(required = false, name = "selector") String selector, HttpSession httpSession) {
 		String session_id = httpSession.getId();
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("session", session_id);
@@ -40,7 +53,9 @@ public class RootController {
 		} else {
 			order = orderService.getLastOrderRelatedToSession(session_id);
 		}
-		modelAndView.addObject("order", order);
+		if (order != null) {
+			modelAndView.addObject("order", order);
+		}
 		ArrayList<Book> allBooks = null;
 		/*
 		 * Search
@@ -51,26 +66,74 @@ public class RootController {
 			modelAndView.addObject("searchQuery", searchQuery);
 			switch (selector) {
 
-			case "byTitle":
-				allBooks = bookService.findByTitle(searchQuery);
-				modelAndView.addObject("allBooks", allBooks);
-				break;
-			case "byGenre":
-				allBooks = bookService.findByGenre(searchQuery);
-				modelAndView.addObject("allBooks", allBooks);
-				break;
-			case "byAuthor":
-				allBooks = bookService.findByAuthor(searchQuery);
-				modelAndView.addObject("allBooks", allBooks);
-				break;
-			default:
-				break;
+				case "byTitle":
+					allBooks = bookService.searchByTitle(searchQuery);
+					modelAndView.addObject("allBooks", allBooks);
+					break;
+				case "byGenre":
+					allBooks = bookService.searchByGenre(searchQuery);
+					modelAndView.addObject("allBooks", allBooks);
+					break;
+				case "byAuthor":
+					allBooks = bookService.searchByAuthor(searchQuery);
+					modelAndView.addObject("allBooks", allBooks);
+					break;
+				default:
+					break;
 			}
 			if (allBooks.isEmpty()) {
 				modelAndView.setViewName("fail_search");
 			}
 		}
 
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/populate", method = RequestMethod.GET)
+	public ModelAndView populate(ModelAndView modelAndView) {
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			Document doc = Jsoup.connect("http://www.goodreads.com/list/show/23772.Oxford_World_s_Classics").get();
+			Elements elements = doc.select("a.bookTitle");
+			for (Element element : elements) {
+
+				doc = Jsoup.connect(element.attr("abs:href")).get();
+
+				String bookTitle = doc.select("#bookTitle").text();
+
+				String bookDescription = doc.select("#description span[style='display:none']").text();
+
+				String book_img = doc.select("#coverImage").attr("src");
+
+				Author author = new Author();
+				author.setName(doc.select(".authorName:first-child span").text());
+				LinkedHashSet<Author> authors = new LinkedHashSet<Author>();
+				authors.add(author);
+
+				LinkedHashSet<Genre> genres = new LinkedHashSet<>();
+				Elements genresElement = doc.select(".rightContainer .bigBoxBody .elementList .left");
+				for (Element genreElement : genresElement) {
+					Genre genre = new Genre();
+					genre.setName(genreElement.text());
+					genres.add(genre);
+				}
+
+				double min = 19.99;
+				double max = 99.99;
+				Random r = new Random();
+				double randomNumber = min + (max - min) * r.nextDouble();
+				randomNumber = Double.parseDouble(new DecimalFormat("#0.00").format(randomNumber).replace(",","."));
+
+				Book book = new Book(bookTitle, bookDescription, book_img, randomNumber, genres, authors);
+				BookService bookService = new BookService();
+				bookService.addBook(book);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+
+		}
+		modelAndView.setViewName("main");
 		return modelAndView;
 	}
 }

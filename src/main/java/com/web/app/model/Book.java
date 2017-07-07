@@ -3,20 +3,10 @@ package com.web.app.model;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "books")
+@Table(name = "book")
 public class Book {
 
 	private Integer id;
@@ -24,13 +14,14 @@ public class Book {
 	private String description;
 	private String img_url;
 	private Double price;
-	private Set<Genre> genres = new LinkedHashSet<Genre>(0); 
-	private Set<Author>  authors = new LinkedHashSet<Author>(0);
+	private Set<Genre> genres = new LinkedHashSet<>();
+	private Set<Author> authors = new LinkedHashSet<>();
+
 	public Book() {
-		
+
 	}
-	
-	public Book(String title, String description,String img_url , Double price, Set<Genre> genres, Set<Author> authors) {
+
+	public Book(String title, String description, String img_url, Double price, Set<Genre> genres, Set<Author> authors) {
 		this.title = title;
 		this.description = description;
 		this.img_url = img_url;
@@ -38,32 +29,33 @@ public class Book {
 		this.genres = genres;
 		this.authors = authors;
 	}
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
+	@Transient
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
+	@Id
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getImg_url() {
 		return img_url;
 	}
@@ -75,13 +67,13 @@ public class Book {
 	public Double getPrice() {
 		return price;
 	}
-	
+
 	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name="book_id")}, inverseJoinColumns = {@JoinColumn(name="genre_id")})
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "book_title")}, inverseJoinColumns = {@JoinColumn(name = "genre")})
 	@OrderBy("name ASC")
 	public Set<Genre> getGenres() {
 		return genres;
@@ -90,10 +82,10 @@ public class Book {
 	public void setGenres(Set<Genre> genres) {
 		this.genres = genres;
 	}
-	
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name="author_id"))
-	@OrderBy("author_name ASC")
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "book_author", joinColumns = {@JoinColumn(name = "book_title")}, inverseJoinColumns = {@JoinColumn(name = "author")})
+	@OrderBy("name ASC")
 	public Set<Author> getAuthors() {
 		return authors;
 	}
@@ -101,7 +93,15 @@ public class Book {
 	public void setAuthors(Set<Author> authors) {
 		this.authors = authors;
 	}
-	
+
+	public void addAuthor(Author author) {
+		this.authors.add(author);
+	}
+
+	public void addGenre(Genre genre) {
+		this.genres.add(genre);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("title: %s, description: %s, price: %s", title, description, price);

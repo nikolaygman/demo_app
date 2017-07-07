@@ -1,13 +1,16 @@
 package com.web.app.service;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.web.app.model.Order;
+
 
 @Service
 public class OrderService {
@@ -61,25 +64,31 @@ public class OrderService {
 		Session session = sessionFactory.openSession();
 		Order order = null;
 		try {
-			order = (Order) session
-			.createQuery((String.format("from Order where user_id = %s order by createdAt desc", user_id)))
-			.list()
-			.get(0);
+			Query query = session.createQuery("from Order where user_id = :user_id");
+			query.setParameter("user_id", user_id);
+			List<Order> orderList = query.list();
+			if (!orderList.isEmpty()) {
+				order = orderList.get(0);
+			}
 		} catch (Exception e) {
-			
+
 		} finally {
 			session.close();
 		}
 		return order;
 	}
+
 	public Order getLastOrderRelatedToSession(String session_id) {
 		Session session = sessionFactory.openSession();
 		Order order = null;
 		try {
-			order = (Order) session
-			.createQuery((String.format("from Order where session_id = '%s' order by createdAt desc", session_id)))
-			.list()
-			.get(0);
+			Query query = session.createQuery("from Order where session_id = :session_id " +
+					"order by createdAt desc");
+			query.setParameter("session_id", session_id);
+			List<Order> orderList = query.list();
+			if (!orderList.isEmpty()) {
+				order = orderList.get(0);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

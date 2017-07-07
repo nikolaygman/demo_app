@@ -69,9 +69,9 @@ public class OrderController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "updateTotal", method = RequestMethod.GET, produces = { "tex/html; UTF-8" })
-	public @ResponseBody String updateTotal(@RequestParam int quantity, int book_id) {
-		Book book = bookService.findById(book_id);
+	@RequestMapping(value = "/updateTotal", method = RequestMethod.GET, produces = { "tex/html; UTF-8" })
+	public @ResponseBody String updateTotal(@RequestParam int quantity, String bookTitle) {
+		Book book = bookService.findByTitle(bookTitle);
 		return new DecimalFormat("#0.00").format(book.getPrice() * quantity);
 	}
 }

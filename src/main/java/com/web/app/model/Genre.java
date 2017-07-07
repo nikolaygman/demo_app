@@ -1,13 +1,9 @@
 package com.web.app.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "genres")
+@Table(name = "genre")
 
 public class Genre {
 
@@ -21,9 +17,7 @@ public class Genre {
 	public Genre(String name) {
 		this.name = name;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Transient
 	public Integer getId() {
 		return id;
 	}
@@ -32,12 +26,18 @@ public class Genre {
 		this.id = id;
 	}
 
+	@Id
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("name: %s", this.name);
 	}
 
 }
