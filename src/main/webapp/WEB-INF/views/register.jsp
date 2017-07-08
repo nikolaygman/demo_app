@@ -50,23 +50,28 @@
             dataType: 'json',
             data: $('#registerForm').serialize(),
             success: function (result) {
-                $('#registerForm-usernameError').hide();
-                $('#registerForm-passwordError').hide();
-                $('#registerForm-passwordConfirmationError').hide();
+                var userNameError = $('#registerForm-usernameError');
+                var passwordError = $('#registerForm-passwordError');
+                var passwordConfirmationError = $('#registerForm-passwordConfirmationError');
+                userNameError.hide();
+                passwordError.hide();
+                passwordConfirmationError.hide();
                 $.each(result, function (index, element) {
+
                         if (index === "success") {
-                            top.location.href = "";
+                            $('registerForm-error').hide();
+                            window.location.replace('/');
                         } else if (index === "username") {
-                            $('#registerForm-usernameError').html(element);
-                            $('#registerForm-usernameError').show();
+                            userNameError.html(element);
+                            userNameError.show();
                             $('#registerForm-error').show();
                         } else if (index === "password") {
-                            $('#registerForm-passwordError').html(element);
-                            $('#registerForm-passwordError').show();
+                            passwordError.html(element);
+                            passwordError.show();
                             $('#registerForm-error').show();
                         } else if (index === "passwordConfirmation") {
-                            $('#registerForm-passwordConfirmationError').html(element);
-                            $('#registerForm-passwordConfirmationError').show();
+                            passwordConfirmationError.html(element);
+                            passwordConfirmationError.show();
                             $('#registerForm-error').show();
                         }
                     }
