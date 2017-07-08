@@ -37,7 +37,7 @@ public class OrderService {
 		Session session = sessionFactory.openSession();
 		ArrayList<Order> foundedOrders = null;
 		try {
-			Query query = session.createQuery("from Order where sessionId = :user_id order by created_at desc");
+			Query query = session.createQuery("from Order where user_id = :user_id order by created_at desc");
 			query.setParameter("user_id",user_id);
 			foundedOrders = (ArrayList<Order>) query.list();
 		} catch (Exception e) {
