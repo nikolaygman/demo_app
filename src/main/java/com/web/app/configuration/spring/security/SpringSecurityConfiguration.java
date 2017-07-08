@@ -38,6 +38,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.rememberMe()
 				.and()
 			;
+
 	}
 	
 }

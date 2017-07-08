@@ -168,8 +168,15 @@ public class BookService {
 	}
 	public int getBooksLastPage(int booksPerPageCount) {
 		Session session = sessionFactory.openSession();
-		Query query = session.createQuery("Select count (b.id) from Book b");
-		Long totalBookCount = (Long) query.uniqueResult();
+		Long totalBookCount = 0L ;
+		try {
+			Query query = session.createQuery("Select count (b.id) from Book b");
+			totalBookCount  = (Long) query.uniqueResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 		return (int) (Math.ceil(totalBookCount / booksPerPageCount));
 	}
 }
