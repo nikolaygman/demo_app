@@ -123,7 +123,7 @@ public class BookService {
 		Session session = sessionFactory.openSession();
 		ArrayList<Book> foundedBooks = new ArrayList<Book>();
 		try {
-			Query query = session.createQuery("select distinct b  from Book b join b.authors a where a.name LIKE :genre");
+			Query query = session.createQuery("select distinct b  from Book b join b.genres a where a.name LIKE :genre");
 			query.setParameter("genre", genre + "%");
 			foundedBooks = (ArrayList<Book>) query.list();
 		} catch (Exception e) {
