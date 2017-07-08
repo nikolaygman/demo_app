@@ -52,6 +52,7 @@
             success: function (result) {
                 $('#registerForm-usernameError').hide();
                 $('#registerForm-passwordError').hide();
+                $('#registerForm-passwordConfirmationError').hide();
                 $.each(result, function (index, element) {
                         if (index === "success") {
                             top.location.href = "";
