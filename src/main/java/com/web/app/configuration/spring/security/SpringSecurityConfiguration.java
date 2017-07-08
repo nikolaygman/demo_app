@@ -37,8 +37,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 			.rememberMe()
 				.and()
-			.requiresChannel().antMatchers("/**").requiresSecure()
-			
 			;
 	}
 	
