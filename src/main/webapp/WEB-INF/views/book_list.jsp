@@ -47,21 +47,75 @@
                         </button>
 
                     </div>
-                    <div class="col-md-6 text-right">${book.price}</div>
+                    <div class="col-md-6 text-right">${book.price} &#36;</div>
                 </div>
             </div>
         </div>
     </c:forEach>
 </div>
+
+<nav aria-label="Page navigation">
+    <div class="text-center">
+        <ul class="pagination">
+            <c:choose>
+                <c:when test="${currentPagePosition==1}">
+                    <li class="active"><a href="">${currentPagePosition}</a></li>
+                </c:when>
+                <c:when test="${currentPagePosition==2}">
+                    <li><a href="/?pagePosition=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
+                    <li class="active"><a href="">${currentPagePosition}</a></li>
+                </c:when>
+                <c:when test="${currentPagePosition==3}">
+                    <li><a href="/?pagePosition=${currentPagePosition - 2}">${currentPagePosition-2}</a></li>
+                    <li><a href="/?pagePosition=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
+                    <li class="active"><a href="">${currentPagePosition}</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li>
+                        <a href="/" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="/?pagePosition=${currentPagePosition - 2}">${currentPagePosition-2}</a></li>
+                    <li><a href="/?pagePosition=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
+                    <li class="active"><a href="">${currentPagePosition}</a></li>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${currentPagePosition==lastPagePosition}">
+
+                </c:when>
+                <c:when test="${currentPagePosition==lastPagePosition-1}">
+                    <li><a href="/?pagePosition=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
+                </c:when>
+                <c:when test="${currentPagePosition==lastPagePosition-2}">
+                    <li><a href="/?pagePosition=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
+                    <li><a href="/?pagePosition=${currentPagePosition + 2}">${currentPagePosition+2}</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="/?pagePosition=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
+                    <li><a href="/?pagePosition=${currentPagePosition + 2}">${currentPagePosition+2}</a></li>
+                    <li>
+                        <a href="/?pagePosition=${lastPagePosition}" aria-label="Next">
+                            <span aria-hidden="true">&raquo</span>
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </div>
+</nav>
+
 <script>
     function updateOrder(buttonValue) {
         $('#order_success').hide();
         $('#modal').show();
         $('#orderBookImg').attr('src', buttonValue.dataset.img_url);
         $('#orderBookImg').attr('alt', buttonValue.dataset.title);
-        $('#orderBookTitle').val(buttonValue.dataset.title);
+        $('#orderBookTitle').html(buttonValue.dataset.title);
+        $('#orderBookPrice').html(buttonValue.dataset.price + " &#36;");
         $('input[name="book_title"]').val(buttonValue.dataset.title);
-        $('#orderTotal').html('Total : ' + buttonValue.dataset.price);
+        $('#orderTotal').html('Total : ' + buttonValue.dataset.price + " &#36;");
         $('#orderQuantity').val(1);
         $('#error_container').hide();
     }
@@ -70,10 +124,10 @@
             url: 'updateTotal',
             data: ({
                 quantity: $('#orderQuantity').val(),
-                bookTitle: $('#orderBookTitle').html()
+                bookTitle: $('input[name="book_title"]').val()
             }),
             success: function (data) {
-                $('#orderTotal').html("Total : " + data);
+                $('#orderTotal').html("Total : " + data + " &#36;");
             }
         });
     }

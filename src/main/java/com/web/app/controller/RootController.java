@@ -18,9 +18,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.web.app.model.Book;
@@ -41,10 +39,19 @@ public class RootController {
 	private OrderService orderService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView main(@RequestParam(required = false, name = "search") String searchQuery,
-							 @RequestParam(required = false, name = "selector") String selector, HttpSession httpSession) {
+	public ModelAndView main(@RequestParam(required = false, defaultValue = "1") int pagePosition,
+							 @RequestParam(required = false, name = "search") String searchQuery,
+							 @RequestParam(required = false, name = "selector") String selector, HttpSession httpSession, ModelAndView modelAndView) {
+		int booksPerPageCount = 5;
+		int lastPage = bookService.getBooksLastPage(booksPerPageCount);
+		if (pagePosition <= 0 || pagePosition > lastPage) {
+			modelAndView.setViewName("fail_search");
+			return modelAndView;
+		}
+
 		String session_id = httpSession.getId();
-		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("currentPagePosition", pagePosition);
+		modelAndView.addObject("lastPagePosition", bookService.getBooksLastPage(booksPerPageCount));
 		modelAndView.addObject("session", session_id);
 		modelAndView.setViewName("main");
 		Order order = null;
@@ -61,7 +68,7 @@ public class RootController {
 		 * Search
 		 */
 		if (searchQuery == null || searchQuery.isEmpty()) {
-			modelAndView.addObject("allBooks", bookService.allBooks());
+			modelAndView.addObject("allBooks", bookService.allBooks(pagePosition, booksPerPageCount));
 		} else {
 			modelAndView.addObject("searchQuery", searchQuery);
 			switch (selector) {
@@ -122,7 +129,7 @@ public class RootController {
 				double max = 99.99;
 				Random r = new Random();
 				double randomNumber = min + (max - min) * r.nextDouble();
-				randomNumber = Double.parseDouble(new DecimalFormat("#0.00").format(randomNumber).replace(",","."));
+				randomNumber = Double.parseDouble(new DecimalFormat("#0.00").format(randomNumber).replace(",", "."));
 
 				Book book = new Book(bookTitle, bookDescription, book_img, randomNumber, genres, authors);
 				BookService bookService = new BookService();

@@ -59,17 +59,35 @@ public class BookService {
 		}
 	}
 
-	public List<Book> allBooks() {
+/*	public List<Book> allBooks(int booksPerPageCount) {
 		Session session = sessionFactory.openSession();
 		List<Book> allBooks = new ArrayList<>();
 		try {
-			allBooks = session.createQuery(new String("from Book")).list();
+			Query query = session.createQuery("from Book");
+			query.setMaxResults(booksPerPageCount);
+			allBooks = query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
 		return allBooks;
+	}*/
+
+	public List<Book> allBooks (int pagePosition,int booksPerPageCount) {
+		Session session = sessionFactory.openSession();
+		ArrayList<Book> foundedBooks = new ArrayList<Book>();
+		try {
+			Query query = session.createQuery("from Book");
+			query.setFirstResult((pagePosition-1) * (booksPerPageCount-1));
+			query.setMaxResults(booksPerPageCount);
+			foundedBooks = (ArrayList<Book>) query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return foundedBooks;
 	}
 
 	public Book findById(int id) {
@@ -147,5 +165,11 @@ public class BookService {
 			session.close();
 		}
 		return foundedBooks;
+	}
+	public int getBooksLastPage(int booksPerPageCount) {
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery("Select count (b.id) from Book b");
+		Long totalBookCount = (Long) query.uniqueResult();
+		return (int) (Math.ceil(totalBookCount / booksPerPageCount));
 	}
 }

@@ -53,7 +53,7 @@
                                     </div>
                                     <input name="${_csrf.parameterName }" value="${_csrf.token }"
                                            type="hidden">
-                                    <input id="#orderBookTitle" name="book_title" value=""
+                                    <input name="book_title" value=""
                                            type="hidden">
                                 </form>
                             </td>
