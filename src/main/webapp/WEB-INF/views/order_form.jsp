@@ -9,6 +9,7 @@
             <div id="order_success" style="display: none">
                 <div class="modal-body alert alert-success" style="margin: 0"><h3>Order submitted</h3></div>
                 <div class="modal-footer">
+                    <a class="close" href="/orders" style="margin-left: 30px">Checkout orders</a>
                     <button type="button" class="close" data-dismiss="modal">Continue</button>
                 </div>
             </div>

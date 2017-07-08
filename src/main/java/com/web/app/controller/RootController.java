@@ -39,18 +39,18 @@ public class RootController {
 	private OrderService orderService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView main(@RequestParam(required = false, defaultValue = "1") int pagePosition,
+	public ModelAndView main(@RequestParam(required = false, defaultValue = "1") int page,
 							 @RequestParam(required = false, name = "search") String searchQuery,
 							 @RequestParam(required = false, name = "selector") String selector, HttpSession httpSession, ModelAndView modelAndView) {
 		int booksPerPageCount = 5;
 		int lastPage = bookService.getBooksLastPage(booksPerPageCount);
-		if (pagePosition <= 0 || pagePosition > lastPage) {
+		if (page <= 0 || page > lastPage) {
 			modelAndView.setViewName("fail_search");
 			return modelAndView;
 		}
 
 		String session_id = httpSession.getId();
-		modelAndView.addObject("currentPagePosition", pagePosition);
+		modelAndView.addObject("currentPagePosition", page);
 		modelAndView.addObject("lastPagePosition", bookService.getBooksLastPage(booksPerPageCount));
 		modelAndView.addObject("session", session_id);
 		modelAndView.setViewName("main");
@@ -68,7 +68,7 @@ public class RootController {
 		 * Search
 		 */
 		if (searchQuery == null || searchQuery.isEmpty()) {
-			modelAndView.addObject("allBooks", bookService.allBooks(pagePosition, booksPerPageCount));
+			modelAndView.addObject("allBooks", bookService.allBooks(page, booksPerPageCount));
 		} else {
 			modelAndView.addObject("searchQuery", searchQuery);
 			switch (selector) {

@@ -62,12 +62,12 @@
                     <li class="active"><a href="">${currentPagePosition}</a></li>
                 </c:when>
                 <c:when test="${currentPagePosition==2}">
-                    <li><a href="/?pagePosition=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
+                    <li><a href="/?page=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
                     <li class="active"><a href="">${currentPagePosition}</a></li>
                 </c:when>
                 <c:when test="${currentPagePosition==3}">
-                    <li><a href="/?pagePosition=${currentPagePosition - 2}">${currentPagePosition-2}</a></li>
-                    <li><a href="/?pagePosition=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
+                    <li><a href="/?page=${currentPagePosition - 2}">${currentPagePosition-2}</a></li>
+                    <li><a href="/?page=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
                     <li class="active"><a href="">${currentPagePosition}</a></li>
                 </c:when>
                 <c:otherwise>
@@ -76,8 +76,8 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li><a href="/?pagePosition=${currentPagePosition - 2}">${currentPagePosition-2}</a></li>
-                    <li><a href="/?pagePosition=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
+                    <li><a href="/?page=${currentPagePosition - 2}">${currentPagePosition-2}</a></li>
+                    <li><a href="/?page=${currentPagePosition - 1}">${currentPagePosition-1}</a></li>
                     <li class="active"><a href="">${currentPagePosition}</a></li>
                 </c:otherwise>
             </c:choose>
@@ -86,17 +86,17 @@
 
                 </c:when>
                 <c:when test="${currentPagePosition==lastPagePosition-1}">
-                    <li><a href="/?pagePosition=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
+                    <li><a href="/?page=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
                 </c:when>
                 <c:when test="${currentPagePosition==lastPagePosition-2}">
-                    <li><a href="/?pagePosition=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
-                    <li><a href="/?pagePosition=${currentPagePosition + 2}">${currentPagePosition+2}</a></li>
+                    <li><a href="/?page=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
+                    <li><a href="/?page=${currentPagePosition + 2}">${currentPagePosition+2}</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li><a href="/?pagePosition=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
-                    <li><a href="/?pagePosition=${currentPagePosition + 2}">${currentPagePosition+2}</a></li>
+                    <li><a href="/?page=${currentPagePosition + 1}">${currentPagePosition+1}</a></li>
+                    <li><a href="/?page=${currentPagePosition + 2}">${currentPagePosition+2}</a></li>
                     <li>
-                        <a href="/?pagePosition=${lastPagePosition}" aria-label="Next">
+                        <a href="/?page=${lastPagePosition}" aria-label="Next">
                             <span aria-hidden="true">&raquo</span>
                         </a>
                     </li>
