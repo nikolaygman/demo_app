@@ -14,19 +14,21 @@
                     <form id="registerForm" action="register" method="post">
                         <div id="username" class="form-group">
                             <label class="control-label">Name</label> <input type="text" class="form-control"
-                                                       placeholder="Name" name="username" value="${userName }">
+                                                                             placeholder="Name" name="username"
+                                                                             value="${userName }">
                             <span id="username-helpBlock" class="help-block"></span>
                         </div>
                         <div id="password" class="form-group">
                             <label class="control-label">Password</label> <input type="password"
-                                                           class="form-control" placeholder="Password" name="password">
+                                                                                 class="form-control"
+                                                                                 placeholder="Password" name="password">
                             <span id="password-helpBlock" class="help-block"></span>
                         </div>
                         <div id="passwordConfirmation" class="form-group">
                             <label class="control-label">Confirm password</label> <input type="password"
-                                                                   class="form-control"
-                                                                   placeholder="Password confirmation"
-                                                                   name="passwordConfirmation">
+                                                                                         class="form-control"
+                                                                                         placeholder="Password confirmation"
+                                                                                         name="passwordConfirmation">
                             <span id="passwordConfirmation-helpBlock" class="help-block"></span>
                         </div>
                         <input name="${_csrf.parameterName }" value="${_csrf.token }"
@@ -51,27 +53,32 @@
                 var userNameError = $('#username');
                 var passwordError = $('#password');
                 var passwordConfirmationError = $('#passwordConfirmation');
-                $('#username').removeClass('has-error');
-                $('#password').removeClass('has-error');
-                $('#passwordConfirmation').removeClass('has-error');
-                $('#username-helpBlock').hide();
-                $('#password-helpBlock').hide();
-                $('#passwordConfirmation-helpBlock').hide();
+
+                var usernameHelpBlock = $('#username-helpBlock');
+                var passwordHelpBlock = $('#password-helpBlock');
+                var passwordConfirmationHelpBlock = $('#passwordConfirmation-helpBlock');
+
+                userNameError.removeClass('has-error');
+                passwordError.removeClass('has-error');
+                passwordConfirmationError.removeClass('has-error');
+                usernameHelpBlock.hide();
+                passwordHelpBlock.hide();
+                passwordConfirmationHelpBlock.hide();
                 $.each(result, function (index, element) {
                         if (index === "success") {
                             window.location.replace('/');
                         } else if (index === "username") {
-                            $('#username').addClass("has-error");
-                            $('#username-helpBlock').html(element);
-                            $('#username-helpBlock').show();
+                            userNameError.addClass("has-error");
+                            usernameHelpBlock.html(element);
+                            usernameHelpBlock.show();
                         } else if (index === "password") {
-                            $('#password').addClass("has-error");
-                            $('#password-helpBlock').html(element);
-                            $('#password-helpBlock').show();
+                            passwordError.addClass("has-error");
+                            passwordHelpBlock.html(element);
+                            passwordHelpBlock.show();
                         } else if (index === "passwordConfirmation") {
-                            $('#passwordConfirmation').addClass("has-error");
-                            $('#passwordConfirmation-helpBlock').html(element);
-                            $('#passwordConfirmation-helpBlock').show();
+                            passwordConfirmationError.addClass("has-error");
+                            passwordConfirmationHelpBlock.html(element);
+                            passwordConfirmationHelpBlock.show();
                         }
                     }
                 )
