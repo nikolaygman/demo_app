@@ -18,27 +18,27 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService);
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+
 		http.authorizeRequests().antMatchers("/logout").hasAuthority("ROLE_USER")
 				.and()
-			.authorizeRequests().antMatchers("/login").anonymous()
-			.anyRequest().permitAll()
+			.authorizeRequests().antMatchers("/login","/register").anonymous()
 				.and()
 			.formLogin().loginPage("/login").usernameParameter("username").defaultSuccessUrl("/")
 				.and()
 			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
 				.and()
 			.rememberMe()
-				.and()
-			;
+				.and().exceptionHandling().accessDeniedPage("/redirect_home");
+
 
 	}
-	
+
 }

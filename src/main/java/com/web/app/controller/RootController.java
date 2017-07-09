@@ -143,4 +143,8 @@ public class RootController {
 		modelAndView.setViewName("main");
 		return modelAndView;
 	}
+	@RequestMapping(value = "/redirect_home",method = RequestMethod.GET)
+	public String redirect_home () {
+		return "redirect:/";
+	}
 }

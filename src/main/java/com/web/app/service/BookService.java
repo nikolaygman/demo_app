@@ -79,7 +79,7 @@ public class BookService {
 		ArrayList<Book> foundedBooks = new ArrayList<Book>();
 		try {
 			Query query = session.createQuery("from Book");
-			query.setFirstResult((pagePosition-1) * (booksPerPageCount-1));
+			query.setFirstResult((pagePosition-1) * (booksPerPageCount));
 			query.setMaxResults(booksPerPageCount);
 			foundedBooks = (ArrayList<Book>) query.list();
 		} catch (Exception e) {
