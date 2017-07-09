@@ -64,20 +64,20 @@
                 usernameHelpBlock.hide();
                 passwordHelpBlock.hide();
                 passwordConfirmationHelpBlock.hide();
-                $.each(result, function (index, element) {
-                        if (index === "success") {
+                $.each(result, function (field, errorMessage) {
+                        if (field === "success") {
                             window.location.replace('/');
-                        } else if (index === "username") {
+                        } else if (field === "username") {
                             userNameError.addClass("has-error");
-                            usernameHelpBlock.html(element);
+                            usernameHelpBlock.html(errorMessage);
                             usernameHelpBlock.show();
-                        } else if (index === "password") {
+                        } else if (field === "password") {
                             passwordError.addClass("has-error");
-                            passwordHelpBlock.html(element);
+                            passwordHelpBlock.html(errorMessage);
                             passwordHelpBlock.show();
-                        } else if (index === "passwordConfirmation") {
+                        } else if (field === "passwordConfirmation") {
                             passwordConfirmationError.addClass("has-error");
-                            passwordConfirmationHelpBlock.html(element);
+                            passwordConfirmationHelpBlock.html(errorMessage);
                             passwordConfirmationHelpBlock.show();
                         }
                     }

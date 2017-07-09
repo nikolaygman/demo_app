@@ -2,6 +2,7 @@ package com.web.app.controller;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,22 +38,26 @@ public class OrderController {
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = "/make_order", method = RequestMethod.POST, produces = {"text/html"})
+	@RequestMapping(value = "/make_order", method = RequestMethod.POST, produces = {"application/json"})
 	public @ResponseBody
-	String make_order(RedirectView redirectView, ModelMap map, String book_title , @Valid Order order,
-					  BindingResult bindingResult, HttpSession httpSession) {
+	HashMap<String, String> make_order(String book_title, @Valid Order order,
+									   BindingResult bindingResult, HttpSession httpSession) {
+		HashMap<String, String> response = new HashMap<>();
 		if (bindingResult.hasErrors()) {
-			String errorList = bindingResult.getAllErrors().get(0).getDefaultMessage();
-			return errorList;
+			for (FieldError fieldError : bindingResult.getFieldErrors()) {
+				response.put(fieldError.getField(), fieldError.getDefaultMessage());
+			}
+			return response;
 		} else {
 			order.setBook(bookService.findByTitle(book_title));
 			order.setSessionId(httpSession.getId());
-			if (!userService.isAnonimous()) {
+			if (userService.currentUser() != null) {
 				order.setUser(userService.currentUser());
 			}
 			orderService.saveOrder(order);
+			response.put("success","");
+			return response;
 		}
-		return "no_errors";
 	}
 
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)

@@ -8,7 +8,6 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.app.model.Author;
@@ -21,8 +20,8 @@ public class BookService {
 	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	public void addBook(Book book) {
-		Session session = sessionFactory.openSession();
 		if (findByTitle((book.getTitle())) == null) {
+			Session session = sessionFactory.openSession();
 			try {
 				session.beginTransaction();
 				Set<Genre> genres = new LinkedHashSet<>();
@@ -47,13 +46,12 @@ public class BookService {
 				}
 
 				book.setAuthors(authors);
-
 				session.save(book);
+				session.getTransaction().commit();
 			} catch (Exception e) {
 				session.getTransaction().rollback();
 				e.printStackTrace();
 			} finally {
-				session.getTransaction().commit();
 				session.close();
 			}
 		}
@@ -74,12 +72,12 @@ public class BookService {
 		return allBooks;
 	}*/
 
-	public List<Book> allBooks (int pagePosition,int booksPerPageCount) {
+	public List<Book> allBooks(int pagePosition, int booksPerPageCount) {
 		Session session = sessionFactory.openSession();
 		ArrayList<Book> foundedBooks = new ArrayList<Book>();
 		try {
 			Query query = session.createQuery("from Book");
-			query.setFirstResult((pagePosition-1) * (booksPerPageCount));
+			query.setFirstResult((pagePosition - 1) * (booksPerPageCount));
 			query.setMaxResults(booksPerPageCount);
 			foundedBooks = (ArrayList<Book>) query.list();
 		} catch (Exception e) {
@@ -166,12 +164,13 @@ public class BookService {
 		}
 		return foundedBooks;
 	}
+
 	public int getBooksLastPage(int booksPerPageCount) {
 		Session session = sessionFactory.openSession();
-		Long totalBookCount = 0L ;
+		Long totalBookCount = 0L;
 		try {
 			Query query = session.createQuery("Select count (b.id) from Book b");
-			totalBookCount  = (Long) query.uniqueResult();
+			totalBookCount = (Long) query.uniqueResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

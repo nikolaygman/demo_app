@@ -117,7 +117,13 @@
         $('input[name="book_title"]').val(buttonValue.dataset.title);
         $('#orderTotal').html('Total : ' + buttonValue.dataset.price + " &#36;");
         $('#orderQuantity').val(1);
-        $('#error_container').hide();
+
+        $('#firstName').removeClass('has-error');
+        $('#lastName').removeClass('has-error');
+        $('#address').removeClass('has-error');
+        $('#firstNameHelpBlock').hide();
+        $('#lastNameHelpBlock').hide();
+        $('#addressHelpBlock').hide();
     }
     function updateTotal() {
         $.ajax({
@@ -138,15 +144,42 @@
             url: 'make_order',
             data: form,
             success: function (result) {
-                if (result === "no_errors") {
-                    $('#modal').hide();
-                    $('#order_success').show();
-                }
-                else {
-                    $('#error_container').html(result);
-                    $('#error_container').show();
-                }
+
+                var firstName = $('#firstName');
+                var lastName = $('#lastName');
+                var address = $('#address');
+
+                var firstNameHelpBlock = $('#firstNameHelpBlock');
+                var lastNameHelpBlock = $('#lastNameHelpBlock');
+                var addressHelpBlock = $('#addressHelpBlock');
+
+                firstName.removeClass('has-error');
+                lastName.removeClass('has-error');
+                address.removeClass('address');
+                firstNameHelpBlock.hide();
+                lastNameHelpBlock.hide();
+                addressHelpBlock.hide()
+                $.each(result,
+                    function (field, errorMessage) {
+                        if (field === "success") {
+                            $('#modal').hide();
+                            $('#order_success').show();
+                        } else if (field === 'firstName') {
+                            firstName.addClass('has-error');
+                            firstNameHelpBlock.html(errorMessage);
+                            firstNameHelpBlock.show();
+                        } else if (field === 'lastName') {
+                            lastName.addClass('has-error');
+                            lastNameHelpBlock.html(errorMessage);
+                            lastNameHelpBlock.show();
+                        } else if (field === 'address') {
+                            address.addClass('has-error');
+                            addressHelpBlock.html(errorMessage);
+                            addressHelpBlock.show();
+                        }
+                    }
+                )
             }
-        });
+        })
     }
 </script>

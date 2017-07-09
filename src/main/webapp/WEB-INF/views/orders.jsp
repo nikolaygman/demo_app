@@ -42,7 +42,7 @@
 							<div class="form-group ">
 								<label class="col-sm-4 control-label"> Book </label>
 								<div class="col-sm-3">
-									<img alt="${order.book.title }" src="${order.book.img_url }"
+									<img class="img-thumbnail" alt="${order.book.title }" src="${order.book.img_url }"
 										height="150px" width="100px">
 								</div>
 								<div class="col-sm-5" style="padding-top: 7px">
@@ -51,7 +51,7 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label"> Price </label>
-								<div class="col-sm-6" style="padding-top: 7px">${order.book.price }</div>
+								<div class="col-sm-6" style="padding-top: 7px">${order.book.price } &#36;</div>
 							</div>
 							<div class="form-group">
 
@@ -67,7 +67,7 @@
 				</tr>
 				<tr>
 					<th colspan="2"><small style="float: right; padding-top: 7px"
-						id="order-total">Total : ${order.getTotal() }</small></th>
+						id="order-total">Total : ${order.getTotal() } &#36;</small></th>
 				</tr>
 			</tbody>
 		</table>
